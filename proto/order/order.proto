@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package order;
+import "user/user.proto";
+option go_package = "/proto/gen;genpb";
+
+message Order {
+     string id = 1;
+     user.User user = 2;
+}
