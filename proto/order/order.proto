@@ -7,4 +7,9 @@ option go_package = "/proto/gen;genpb";
 message Order {
      string id = 1;
      user.User user = 2;
+     Address address = 3;
+}
+
+message Address {
+    string area = 1;
 }

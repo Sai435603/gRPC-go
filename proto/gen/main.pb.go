@@ -9,6 +9,7 @@ package genpb
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	gen "proto/gen"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -122,12 +123,16 @@ var File_main_proto protoreflect.FileDescriptor
 const file_main_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"main.proto\x12\x04main\"4\n" +
+	"main.proto\x12\x04main\x1a\x0fuser/user.proto\x1a\x11order/order.proto\"4\n" +
 	"\fHelloRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n" +
 	"\x03age\x18\x02 \x01(\x05R\x03age\"2\n" +
 	"\rHelloResponse\x12!\n" +
-	"\fconf_message\x18\x01 \x01(\tR\vconfMessageB\x12Z\x10/proto/gen;genpbb\x06proto3"
+	"\fconf_message\x18\x01 \x01(\tR\vconfMessage2o\n" +
+	"\x0eExampleService\x123\n" +
+	"\bSayHello\x12\x12.main.HelloRequest\x1a\x13.main.HelloResponse\x12(\n" +
+	"\fGetUserOrder\x12\n" +
+	".user.User\x1a\f.order.OrderB\x12Z\x10/proto/gen;genpbb\x06proto3"
 
 var (
 	file_main_proto_rawDescOnce sync.Once
@@ -145,10 +150,16 @@ var file_main_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_main_proto_goTypes = []any{
 	(*HelloRequest)(nil),  // 0: main.HelloRequest
 	(*HelloResponse)(nil), // 1: main.HelloResponse
+	(*gen.User)(nil),      // 2: user.User
+	(*Order)(nil),         // 3: order.Order
 }
 var file_main_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
+	0, // 0: main.ExampleService.SayHello:input_type -> main.HelloRequest
+	2, // 1: main.ExampleService.GetUserOrder:input_type -> user.User
+	1, // 2: main.ExampleService.SayHello:output_type -> main.HelloResponse
+	3, // 3: main.ExampleService.GetUserOrder:output_type -> order.Order
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -159,6 +170,7 @@ func file_main_proto_init() {
 	if File_main_proto != nil {
 		return
 	}
+	file_order_order_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
@@ -167,7 +179,7 @@ func file_main_proto_init() {
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
-			NumServices:   0,
+			NumServices:   1,
 		},
 		GoTypes:           file_main_proto_goTypes,
 		DependencyIndexes: file_main_proto_depIdxs,

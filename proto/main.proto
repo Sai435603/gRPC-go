@@ -2,6 +2,9 @@ syntax = "proto3";
 
 package main;
 
+import "user/user.proto";
+import "order/order.proto";
+
 option go_package = "/proto/gen;genpb";
 
 message HelloRequest {
@@ -11,4 +14,9 @@ message HelloRequest {
 
 message HelloResponse {
      string conf_message = 1;
+}
+
+service ExampleService {
+     rpc SayHello (HelloRequest) returns (HelloResponse);
+     rpc GetUserOrder (user.User) returns (order.Order); 
 }
