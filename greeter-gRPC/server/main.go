@@ -8,6 +8,7 @@ import (
 	"net"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
 type server struct {
@@ -30,14 +31,20 @@ func main() {
 	//later we need to register the umimplemented rpc server
 	// implement the unimplemented function above main..
 	port := ":50051"
-
+	cert := "cert.pem"
+	key := "key.pem"
 	lis, err := net.Listen("tcp", port)
 
 	if err != nil {
 		log.Fatalln("Listening Failed: ", err)
 	}
 	fmt.Println("gRPC Server Started and Listening at port", port)
-	grpcServer := grpc.NewServer()
+	creds, err := credentials.NewServerTLSFromFile(cert, key)
+	if err != nil {
+		log.Fatalln("failed to load credentials ", err)
+	}
+
+	grpcServer := grpc.NewServer(grpc.Creds(creds))
 
 	//todo
 	pb.RegisterGreeterServer(grpcServer, &server{})
