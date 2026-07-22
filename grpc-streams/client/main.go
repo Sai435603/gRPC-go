@@ -70,4 +70,36 @@ func main() {
 		log.Fatalln(err)
 	}
 	fmt.Println("Server response after stream: ", res.Sum)
+
+	//bi di stream
+
+	stream2, err := client.Chat(ctx)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	messages := []string{"hii", "hello", "How are you", "bye"}
+	for _, m := range messages {
+		err := stream2.Send(&pb.ChatMessage{
+			Message: m,
+		})
+		if err != nil {
+			log.Fatalln(err)
+		}
+		time.Sleep(time.Second)
+	}
+	stream2.CloseSend()
+	go func() {
+		for {
+			msg, err := stream2.Recv()
+			if err == io.EOF {
+				return
+			}
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			log.Println("Server : ", msg)
+		}
+	}()
+	select {}
 }
