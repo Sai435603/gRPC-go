@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"log"
+	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -22,28 +24,50 @@ func main() {
 	defer conn.Close()
 	ctx := context.Background()
 
-	calcClient := pb.NewCalculatorClient(conn)
+	client := pb.NewCalculatorClient(conn)
 
 	req := &pb.FibonacciRequest{
 		Number: 10,
 	}
 
-	stream, err := calcClient.GenerateFibonacci(ctx, req)
+	stream, err := client.GenerateFibonacci(ctx, req)
 
 	for {
-		res, err :=  stream.Recv()
-		
+		res, err := stream.Recv()
+
 		if err == io.EOF {
-			log.Println("End of Stream") 
+			log.Println("End of Stream")
 			break
 		}
 
 		if err != nil {
-			 log.Fatalln(err)
+			log.Fatalln(err)
 		}
 
 		log.Println("Fibonacci numer: ", res.GetNumber())
 
 	}
 
+	//numgen
+	stream1, err := client.SendNumbers(ctx)
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	for num := range 9 {
+		err := stream1.Send(&pb.NumberRequest{
+			Number: int32(num),
+		})
+		if err != nil {
+			log.Fatalln(err)
+		}
+		time.Sleep(time.Second * 2)
+	}
+	res, err := stream1.CloseAndRecv()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println("Server response after stream: ", res.Sum)
 }

@@ -6,6 +6,15 @@ option go_package="proto/gen;genpb";
 
 service Calculator {
      rpc GenerateFibonacci (FibonacciRequest) returns (stream FibonacciResponse);
+     rpc SendNumbers (stream NumberRequest) returns (NumberResponse);
+}
+
+message NumberRequest {
+      int32 Number = 1; 
+}
+
+message NumberResponse {
+      int32 Sum = 1;
 }
 
 message FibonacciRequest {
@@ -15,3 +24,4 @@ message FibonacciRequest {
 message FibonacciResponse {
      int32 Number = 1;
 }
+
