@@ -1,4 +1,4 @@
 .env
 
-*/key.pem
-*/cert.pem
+**/key.pem
+**/cert.pem

@@ -38,4 +38,7 @@ func main() {
 		log.Fatalln("Couldn't greet")
 	}
 	fmt.Println("you got the greet: ", res.Message)
+
+	connState := conn.GetState()
+	fmt.Println("State ", connState)
 }
